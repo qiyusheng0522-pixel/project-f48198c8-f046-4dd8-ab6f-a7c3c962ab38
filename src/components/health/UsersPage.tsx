@@ -45,13 +45,15 @@ const UsersPage = () => {
 
       <div className="flex-1 overflow-y-auto px-4 py-4">
         {/* Overview */}
-        <section className="bg-card rounded-2xl shadow-card p-3 grid grid-cols-4 gap-2">
-          {overview.map((o) => (
-            <div key={o.label} className="text-center">
-              <p className={`text-xl font-bold ${o.tone || "text-foreground"}`}>{o.value}</p>
-              <p className="text-[10px] text-muted-foreground mt-0.5">{o.label}</p>
-            </div>
-          ))}
+        <section className="bg-card rounded-2xl shadow-card p-3">
+          <div className="grid grid-cols-4 gap-2">
+            {overview.map((o) => (
+              <button key={o.label} onClick={() => push("grading")} className="text-center">
+                <p className={`text-xl font-bold ${o.tone || "text-foreground"}`}>{o.value}</p>
+                <p className="text-[10px] text-muted-foreground mt-0.5">{o.label}</p>
+              </button>
+            ))}
+          </div>
         </section>
 
         {/* User list */}
