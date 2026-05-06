@@ -15,6 +15,7 @@ import DispatchView from "@/components/health/subviews/DispatchView";
 import SmartFollowupView from "@/components/health/subviews/SmartFollowupView";
 import AIScriptView from "@/components/health/subviews/AIScriptView";
 import SendMessageView from "@/components/health/subviews/SendMessageView";
+import PatientChatView from "@/components/health/subviews/PatientChatView";
 import StandardPathView from "@/components/health/subviews/StandardPathView";
 import FollowupRecordView from "@/components/health/subviews/FollowupRecordView";
 import UserDetailView from "@/components/health/subviews/UserDetailView";
@@ -54,6 +55,7 @@ const Index = () => {
       case "smart-followup": return <SmartFollowupView />;
       case "ai-script": return <AIScriptView />;
       case "send-message": return <SendMessageView />;
+      case "patient-chat": return <PatientChatView payload={top.payload} />;
       case "standard-path": return <StandardPathView />;
       case "followup-record": return <FollowupRecordView />;
       case "user-detail": return <UserDetailView payload={top.payload} />;
