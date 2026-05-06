@@ -33,7 +33,7 @@ const UserDetailView = ({ payload }: { payload?: any }) => {
           <button className="bg-primary-soft text-primary rounded-xl py-2 flex flex-col items-center gap-0.5">
             <Phone className="w-4 h-4" /><span className="text-[11px]">电话</span>
           </button>
-          <button onClick={() => push("send-message")} className="bg-primary-soft text-primary rounded-xl py-2 flex flex-col items-center gap-0.5">
+          <button onClick={() => push("patient-chat", u)} className="bg-primary-soft text-primary rounded-xl py-2 flex flex-col items-center gap-0.5">
             <MessageCircle className="w-4 h-4" /><span className="text-[11px]">消息</span>
           </button>
           <button onClick={() => push("user-portrait")} className="bg-primary-soft text-primary rounded-xl py-2 flex flex-col items-center gap-0.5">

@@ -9,6 +9,7 @@ export type SubView =
   | "smart-followup"
   | "ai-script"
   | "send-message"
+  | "patient-chat"
   | "standard-path"
   | "followup-record"
   | "user-detail"
