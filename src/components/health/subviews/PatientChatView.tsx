@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Phone, Video, Mic, Sparkles, Send, Plus, Image as ImageIcon, FileText, Activity, Heart, Droplet, ChevronDown, ChevronUp, AlertTriangle, Pill } from "lucide-react";
-import SubPage from "../SubPage";
+import { ChevronLeft, Phone, Video, Mic, Sparkles, Send, Plus, Image as ImageIcon, FileText, Activity, Heart, Droplet, ChevronDown, ChevronUp, AlertTriangle, Pill } from "lucide-react";
 import { useNav } from "../nav-context";
 
 interface Msg {
@@ -33,28 +32,22 @@ const PatientChatView = ({ payload }: { payload?: any }) => {
   ];
 
   return (
-    <SubPage
-      title=""
-      onBack={pop}
-      variant="primary"
-      right={
-        <div className="flex items-center gap-1.5">
+    <div className="flex flex-col h-full">
+      {/* Header + collapsible patient profile */}
+      <header className="bg-gradient-primary text-primary-foreground px-3 pt-3 pb-3">
+        <div className="flex items-center gap-2 mb-2">
+          <button onClick={pop} className="w-8 h-8 rounded-full hover:bg-black/10 flex items-center justify-center">
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <h1 className="flex-1 text-base font-bold">单聊</h1>
           <button onClick={() => alert("拨号中…")} className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
             <Phone className="w-4 h-4" />
           </button>
           <button onClick={() => alert("视频通话邀请已发送")} className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
             <Video className="w-4 h-4" />
           </button>
-          <button onClick={() => push("user-portrait")} className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-[10px] font-bold">
-            档案
-          </button>
         </div>
-      }
-    >
-      <div className="-mx-4 -my-4 flex flex-col h-full">
-        {/* Patient header (collapsible) */}
-        <div className="bg-gradient-primary text-primary-foreground px-4 pb-3">
-          <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2.5">
             <div className="w-10 h-10 rounded-full bg-white/25 flex items-center justify-center text-base font-bold">{patient.name[0]}</div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-1.5">
@@ -67,7 +60,7 @@ const PatientChatView = ({ payload }: { payload?: any }) => {
               {profileOpen ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
               档案
             </button>
-          </div>
+        </div>
 
           {profileOpen && (
             <div className="mt-3 bg-white/15 backdrop-blur rounded-xl p-3 space-y-2 text-[11px]">
@@ -102,7 +95,7 @@ const PatientChatView = ({ payload }: { payload?: any }) => {
               </button>
             </div>
           )}
-        </div>
+      </header>
 
         {/* Messages */}
         <div className="flex-1 overflow-y-auto bg-muted/30 px-3 py-3 space-y-3">
@@ -188,8 +181,7 @@ const PatientChatView = ({ payload }: { payload?: any }) => {
             <button className="text-[10px] text-muted-foreground flex items-center gap-1"><Activity className="w-3 h-3" />指标卡片</button>
           </div>
         </div>
-      </div>
-    </SubPage>
+    </div>
   );
 };
 
