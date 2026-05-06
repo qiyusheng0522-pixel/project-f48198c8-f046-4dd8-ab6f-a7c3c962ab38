@@ -1,6 +1,7 @@
 import { Activity, UserX, Wifi, ClipboardX, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useNav } from "./nav-context";
 
 const categories = [
   { key: "health", label: "健康指标", icon: Activity, count: 7, tone: "from-destructive/80 to-destructive" },
@@ -18,6 +19,7 @@ const alerts = [
 
 const AlertsPage = () => {
   const [active, setActive] = useState("health");
+  const { push } = useNav();
   return (
     <div className="flex flex-col h-full">
       <header className="px-5 pt-3 pb-3 bg-card border-b border-border">
@@ -74,8 +76,8 @@ const AlertsPage = () => {
                 </div>
                 <div className="flex gap-2 mt-3 pt-3 border-t border-border">
                   <button className="flex-1 text-xs py-1.5 rounded-lg bg-muted text-foreground">忽略</button>
-                  <button className="flex-1 text-xs py-1.5 rounded-lg bg-primary-soft text-primary font-medium">沟通</button>
-                  <button className="flex-1 text-xs py-1.5 rounded-lg bg-gradient-primary text-primary-foreground font-medium flex items-center justify-center gap-0.5">
+                  <button onClick={() => push("send-message")} className="flex-1 text-xs py-1.5 rounded-lg bg-primary-soft text-primary font-medium">沟通</button>
+                  <button onClick={() => push("alert-detail", a)} className="flex-1 text-xs py-1.5 rounded-lg bg-gradient-primary text-primary-foreground font-medium flex items-center justify-center gap-0.5">
                     处理 <ChevronRight className="w-3 h-3" />
                   </button>
                 </div>
