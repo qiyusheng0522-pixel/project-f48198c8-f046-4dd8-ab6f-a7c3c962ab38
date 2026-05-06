@@ -1,4 +1,5 @@
 import { TrendingUp, Award, Users, Calendar } from "lucide-react";
+import { useNav } from "./nav-context";
 
 const kpis = [
   { label: "任务完成率", value: 92, color: "bg-success" },
@@ -7,10 +8,10 @@ const kpis = [
 ];
 
 const team = [
-  { name: "林医生", score: 96, rank: 1, you: true },
-  { name: "陈护士", score: 91, rank: 2 },
-  { name: "刘老师", score: 88, rank: 3 },
-  { name: "赵医生", score: 84, rank: 4 },
+  { name: "林雨晴", score: 96, rank: 1, you: true, role: "高级健康管理师" },
+  { name: "陈雨欣", score: 91, rank: 2, role: "健康管理师" },
+  { name: "刘思琪", score: 88, rank: 3, role: "健康管理师" },
+  { name: "赵敏华", score: 84, rank: 4, role: "助理健康管理师" },
 ];
 
 const reports = [
@@ -20,6 +21,7 @@ const reports = [
 ];
 
 const PerformancePage = () => {
+  const { push } = useNav();
   return (
     <div className="flex flex-col h-full">
       <header className="px-5 pt-3 pb-5 bg-gradient-cool text-primary-foreground">
@@ -65,9 +67,10 @@ const PerformancePage = () => {
           </h2>
           <div className="space-y-2">
             {team.map((m) => (
-              <div
+              <button
                 key={m.name}
-                className={`flex items-center gap-3 p-2 rounded-xl ${m.you ? "bg-primary-soft" : ""}`}
+                onClick={() => !m.you && push("team-member", m)}
+                className={`w-full flex items-center gap-3 p-2 rounded-xl ${m.you ? "bg-primary-soft" : ""}`}
               >
                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold ${m.rank === 1 ? "bg-warning text-warning-foreground" : "bg-muted text-muted-foreground"}`}>
                   {m.rank}
@@ -75,11 +78,12 @@ const PerformancePage = () => {
                 <div className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground text-xs font-bold">
                   {m.name[0]}
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 text-left">
                   <p className="text-xs font-medium text-foreground">{m.name} {m.you && <span className="text-[10px] text-primary">(我)</span>}</p>
+                  <p className="text-[10px] text-muted-foreground">{m.role}</p>
                 </div>
                 <p className="text-sm font-bold text-primary">{m.score}</p>
-              </div>
+              </button>
             ))}
           </div>
         </section>
@@ -91,7 +95,7 @@ const PerformancePage = () => {
           </h2>
           <div className="grid grid-cols-3 gap-2">
             {reports.map((r) => (
-              <div key={r.period} className="bg-card rounded-2xl shadow-soft p-3 text-center">
+              <button key={r.period} onClick={() => push("report-detail", { period: r.period })} className="bg-card rounded-2xl shadow-soft p-3 text-center">
                 <p className="text-[10px] text-muted-foreground">{r.date}</p>
                 <p className="text-xs font-bold text-foreground mt-0.5">{r.period}</p>
                 <div className="mt-2 pt-2 border-t border-border space-y-1">
@@ -100,7 +104,7 @@ const PerformancePage = () => {
                   <p className="text-sm font-bold text-warning leading-none mt-1">{r.alerts}</p>
                   <p className="text-[10px] text-muted-foreground">预警</p>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </section>
