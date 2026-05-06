@@ -1,4 +1,5 @@
 import { Search, Filter, Activity, Heart, Droplet, Moon, Footprints, Pill, Utensils, Scale } from "lucide-react";
+import { useNav } from "./nav-context";
 
 const overview = [
   { label: "负责用户", value: "186" },
@@ -26,6 +27,7 @@ const portrait = [
 ];
 
 const UsersPage = () => {
+  const { push } = useNav();
   return (
     <div className="flex flex-col h-full">
       <header className="px-5 pt-3 pb-3 bg-card border-b border-border">
@@ -69,7 +71,7 @@ const UsersPage = () => {
           </div>
           <div className="space-y-2">
             {users.map((u, i) => (
-              <div key={i} className="bg-card rounded-2xl shadow-soft p-3 flex items-center gap-3">
+              <button key={i} onClick={() => push("user-detail", u)} className="w-full text-left bg-card rounded-2xl shadow-soft p-3 flex items-center gap-3">
                 <div className="relative">
                   <div className="w-11 h-11 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground font-bold text-sm">
                     {u.name[0]}
@@ -93,7 +95,7 @@ const UsersPage = () => {
                 <div className="text-right">
                   <p className="text-[11px] text-muted-foreground">{u.status}</p>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </section>
@@ -102,9 +104,9 @@ const UsersPage = () => {
         <section className="mt-4">
           <div className="flex items-center justify-between mb-2.5">
             <h2 className="text-sm font-bold text-foreground">用户画像 · 张丽华</h2>
-            <button className="text-xs text-primary">详情</button>
+            <button onClick={() => push("user-portrait")} className="text-xs text-primary">详情</button>
           </div>
-          <div className="bg-card rounded-2xl shadow-card p-3 grid grid-cols-4 gap-3">
+          <button onClick={() => push("user-portrait")} className="w-full bg-card rounded-2xl shadow-card p-3 grid grid-cols-4 gap-3">
             {portrait.map((p) => (
               <div key={p.label} className="flex flex-col items-center text-center">
                 <div className={`w-9 h-9 rounded-xl ${p.tone} flex items-center justify-center mb-1`}>
@@ -114,7 +116,7 @@ const UsersPage = () => {
                 <p className="text-[9px] text-muted-foreground">{p.label}·{p.unit}</p>
               </div>
             ))}
-          </div>
+          </button>
         </section>
       </div>
     </div>
