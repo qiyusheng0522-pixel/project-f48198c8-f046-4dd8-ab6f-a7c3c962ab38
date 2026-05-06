@@ -1,4 +1,5 @@
-import { Search, Filter, Activity, Heart, Droplet, Moon, Footprints, Pill, Utensils, Scale } from "lucide-react";
+import { Search, Filter, Activity, Heart, Droplet, Moon, Footprints, Pill, Utensils, Scale, Sparkles } from "lucide-react";
+import { useState } from "react";
 import { useNav } from "./nav-context";
 
 const overview = [
@@ -7,6 +8,8 @@ const overview = [
   { label: "中风险", value: "34", tone: "text-warning" },
   { label: "低风险", value: "140", tone: "text-success" },
 ];
+
+const conditions = ["全部", "糖尿病", "高血压", "冠心病", "高血脂", "亚健康", "肥胖症"];
 
 const users = [
   { name: "张丽华", age: 58, level: "高风险", levelTone: "bg-destructive text-destructive-foreground", tags: ["糖尿病", "高血压"], status: "血糖偏高", color: "bg-destructive" },
@@ -28,6 +31,8 @@ const portrait = [
 
 const UsersPage = () => {
   const { push } = useNav();
+  const [activeCondition, setActiveCondition] = useState("全部");
+  const filteredUsers = activeCondition === "全部" ? users : users.filter((u) => u.tags.includes(activeCondition));
   return (
     <div className="flex flex-col h-full">
       <header className="px-5 pt-3 pb-3 bg-card border-b border-border">
@@ -56,6 +61,42 @@ const UsersPage = () => {
           </div>
         </section>
 
+        {/* AI Insight */}
+        <button
+          onClick={() => push("ai-assistant")}
+          className="w-full mt-4 bg-gradient-primary text-primary-foreground rounded-2xl shadow-card p-3 flex items-center gap-3 text-left"
+        >
+          <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+            <Sparkles className="w-4 h-4" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-bold">AI 智能分群 · 已为你预筛 12 位需优先随访</p>
+            <p className="text-[10px] opacity-90 mt-0.5">基于近 7 天指标波动 + 依从度自动分析，节省 2.5 小时/天</p>
+          </div>
+          <span className="text-[10px] bg-white/20 px-2 py-1 rounded-full">查看</span>
+        </button>
+
+        {/* Condition filter */}
+        <section className="mt-4">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-sm font-bold text-foreground">病症筛选</h2>
+            <span className="text-[10px] text-muted-foreground">共 {filteredUsers.length} 人</span>
+          </div>
+          <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1 no-scrollbar">
+            {conditions.map((c) => (
+              <button
+                key={c}
+                onClick={() => setActiveCondition(c)}
+                className={`text-[11px] px-2.5 py-1 rounded-full whitespace-nowrap shrink-0 ${
+                  activeCondition === c ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                }`}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+        </section>
+
         {/* User list */}
         <section className="mt-4">
           <div className="flex items-center justify-between mb-2.5">
@@ -72,7 +113,7 @@ const UsersPage = () => {
             </div>
           </div>
           <div className="space-y-2">
-            {users.map((u, i) => (
+            {filteredUsers.map((u, i) => (
               <button key={i} onClick={() => push("user-detail", u)} className="w-full text-left bg-card rounded-2xl shadow-soft p-3 flex items-center gap-3">
                 <div className="relative">
                   <div className="w-11 h-11 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground font-bold text-sm">
