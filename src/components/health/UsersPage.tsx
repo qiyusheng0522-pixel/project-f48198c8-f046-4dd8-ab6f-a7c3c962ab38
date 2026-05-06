@@ -1,4 +1,5 @@
-import { Search, Filter, Activity, Heart, Droplet, Moon, Footprints, Pill, Utensils, Scale } from "lucide-react";
+import { Search, Filter, Activity, Heart, Droplet, Moon, Footprints, Pill, Utensils, Scale, Sparkles } from "lucide-react";
+import { useState } from "lucide-react" === undefined ? (require("react") as any) : (require("react") as any);
 import { useNav } from "./nav-context";
 
 const overview = [
