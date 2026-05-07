@@ -4,7 +4,7 @@ import { useNav } from "../nav-context";
 
 const UserDetailView = ({ payload }: { payload?: any }) => {
   const { pop, push } = useNav();
-  const u = payload || { name: "张丽华", age: 58, level: "高风险", tags: ["糖尿病", "高血压"] };
+  const u = payload || { name: "张丽华", age: 58, level: "高风险", tags: ["糖尿病", "高血压"], source: "鼓楼内分泌" };
   const records = [
     { date: "05-05", text: "电话随访 · 血糖 7.2，已调整饮食方案" },
     { date: "05-02", text: "数据复核 · 血压平稳" },
@@ -23,6 +23,9 @@ const UserDetailView = ({ payload }: { payload?: any }) => {
             </div>
             <div className="flex gap-1 mt-1.5">
               <span className="text-[10px] px-1.5 py-0.5 rounded bg-destructive text-destructive-foreground">{u.level}</span>
+              {u.source && (
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary-soft text-primary">来源 · {u.source}</span>
+              )}
               {u.tags?.map((t: string) => (
                 <span key={t} className="text-[10px] px-1.5 py-0.5 rounded bg-accent text-accent-foreground">{t}</span>
               ))}
