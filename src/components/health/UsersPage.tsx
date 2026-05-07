@@ -11,11 +11,19 @@ const overview = [
 
 const conditions = ["全部", "糖尿病", "高血压", "冠心病", "高血脂", "亚健康", "肥胖症"];
 
+const sources = ["全部来源", "省人康复", "鼓楼骨科", "鼓楼内分泌", "蜻蜓自营"];
+const sourceTone: Record<string, string> = {
+  "省人康复": "bg-info/10 text-info",
+  "鼓楼骨科": "bg-warning/10 text-warning",
+  "鼓楼内分泌": "bg-destructive/10 text-destructive",
+  "蜻蜓自营": "bg-primary-soft text-primary",
+};
+
 const users = [
-  { name: "张丽华", age: 58, level: "高风险", levelTone: "bg-destructive text-destructive-foreground", tags: ["糖尿病", "高血压"], status: "血糖偏高", color: "bg-destructive" },
-  { name: "李建国", age: 64, level: "中风险", levelTone: "bg-warning text-warning-foreground", tags: ["高血压"], status: "需用药提醒", color: "bg-warning" },
-  { name: "王秀梅", age: 52, level: "低风险", levelTone: "bg-success text-success-foreground", tags: ["亚健康"], status: "状态良好", color: "bg-success" },
-  { name: "周文斌", age: 70, level: "高风险", levelTone: "bg-destructive text-destructive-foreground", tags: ["冠心病", "糖尿病"], status: "心率异常", color: "bg-destructive" },
+  { name: "张丽华", age: 58, level: "高风险", levelTone: "bg-destructive text-destructive-foreground", tags: ["糖尿病", "高血压"], status: "血糖偏高", color: "bg-destructive", source: "鼓楼内分泌" },
+  { name: "李建国", age: 64, level: "中风险", levelTone: "bg-warning text-warning-foreground", tags: ["高血压"], status: "需用药提醒", color: "bg-warning", source: "省人康复" },
+  { name: "王秀梅", age: 52, level: "低风险", levelTone: "bg-success text-success-foreground", tags: ["亚健康"], status: "状态良好", color: "bg-success", source: "蜻蜓自营" },
+  { name: "周文斌", age: 70, level: "高风险", levelTone: "bg-destructive text-destructive-foreground", tags: ["冠心病", "糖尿病"], status: "心率异常", color: "bg-destructive", source: "鼓楼骨科" },
 ];
 
 const portrait = [
@@ -32,7 +40,12 @@ const portrait = [
 const UsersPage = () => {
   const { push } = useNav();
   const [activeCondition, setActiveCondition] = useState("全部");
-  const filteredUsers = activeCondition === "全部" ? users : users.filter((u) => u.tags.includes(activeCondition));
+  const [activeSource, setActiveSource] = useState("全部来源");
+  const filteredUsers = users.filter(
+    (u) =>
+      (activeCondition === "全部" || u.tags.includes(activeCondition)) &&
+      (activeSource === "全部来源" || u.source === activeSource)
+  );
   return (
     <div className="flex flex-col h-full">
       <header className="px-5 pt-3 pb-3 bg-card border-b border-border">
@@ -78,6 +91,23 @@ const UsersPage = () => {
 
         {/* Condition filter */}
         <section className="mt-4">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-sm font-bold text-foreground">患者来源</h2>
+            <span className="text-[10px] text-muted-foreground">区分合作机构 / 自营</span>
+          </div>
+          <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1 no-scrollbar mb-3">
+            {sources.map((s) => (
+              <button
+                key={s}
+                onClick={() => setActiveSource(s)}
+                className={`text-[11px] px-2.5 py-1 rounded-full whitespace-nowrap shrink-0 ${
+                  activeSource === s ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                }`}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
           <div className="flex items-center justify-between mb-2">
             <h2 className="text-sm font-bold text-foreground">病症筛选</h2>
             <span className="text-[10px] text-muted-foreground">共 {filteredUsers.length} 人</span>
@@ -128,6 +158,9 @@ const UsersPage = () => {
                     <span className={`text-[10px] px-1.5 py-0.5 rounded ${u.levelTone}`}>{u.level}</span>
                   </div>
                   <div className="flex items-center gap-1 mt-1">
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded ${sourceTone[u.source] || "bg-muted text-muted-foreground"}`}>
+                      {u.source}
+                    </span>
                     {u.tags.map((tag) => (
                       <span key={tag} className="text-[10px] px-1.5 py-0.5 rounded bg-accent text-accent-foreground">
                         {tag}
