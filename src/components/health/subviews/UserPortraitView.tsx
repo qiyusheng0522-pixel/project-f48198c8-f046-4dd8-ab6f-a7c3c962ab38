@@ -25,6 +25,7 @@ const UserPortraitView = () => {
     allergy: "青霉素",
     family: "父亲糖尿病史",
     plan: "三月期慢病强化管理 · 第 2 月",
+    source: "鼓楼内分泌",
   };
   const aiSuggestions = [
     { type: "随访", text: "近 3 日空腹血糖均 >7.0，建议今日 16:00 电话随访并复核饮食", urgent: true },
@@ -50,6 +51,9 @@ const UserPortraitView = () => {
               <span className="text-[10px] px-1.5 py-0.5 rounded bg-destructive text-destructive-foreground">高风险</span>
             </div>
             <p className="text-[11px] text-muted-foreground mt-1">{profile.phone} · {profile.plan}</p>
+            <span className="inline-block mt-1 text-[10px] px-1.5 py-0.5 rounded bg-primary-soft text-primary">
+              患者来源 · {profile.source}
+            </span>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-2 mt-3 text-[11px]">
