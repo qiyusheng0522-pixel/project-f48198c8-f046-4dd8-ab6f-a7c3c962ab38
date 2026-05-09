@@ -1,37 +1,30 @@
-import { Bell, Send, Sparkles, ClipboardList, MessageCircle, AlertCircle, CheckCircle2, ArrowRight, Mic, Stethoscope, Route } from "lucide-react";
+import { Bell, Send, ClipboardList, MessageCircle, CheckCircle2, ArrowRight, Route, Users, Sparkles } from "lucide-react";
 import { useNav } from "./nav-context";
 
 const statsData = [
-  { label: "待处理服务", value: 24, icon: ClipboardList, tone: "bg-info/10 text-info" },
-  { label: "待沟通客户", value: 12, icon: MessageCircle, tone: "bg-success/10 text-success" },
-  { label: "待处理预警", value: 7, icon: AlertCircle, tone: "bg-destructive/10 text-destructive" },
-  { label: "今日已完成", value: 36, icon: CheckCircle2, tone: "bg-warning/10 text-warning" },
+  { label: "待处理服务", value: 24, icon: ClipboardList, tone: "bg-info/10 text-info", view: "task-board" as const },
+  { label: "待沟通客户", value: 12, icon: MessageCircle, tone: "bg-success/10 text-success", view: "task-board" as const },
+  { label: "今日已完成", value: 36, icon: CheckCircle2, tone: "bg-warning/10 text-warning", view: "task-board" as const },
 ];
 
-const tasks = [
-  { time: "09:30", title: "张女士 · 餐后血糖随访", tag: "高优先", tone: "text-destructive bg-destructive/10" },
-  { time: "10:15", title: "李先生 · 用药依从性沟通", tag: "中优先", tone: "text-warning bg-warning/10" },
-  { time: "14:00", title: "王老 · 血压数据复核", tag: "低优先", tone: "text-info bg-info/10" },
-  { time: "16:30", title: "周阿姨 · 饮食方案推送", tag: "常规", tone: "text-muted-foreground bg-muted" },
+// SOP 一周跟进阶段（出院/入组第 X 天）
+const sopStages = [
+  { day: 1, title: "出院第 1 天", focus: "建档启动 · 4 步曲 + 三餐打卡督促", count: 8, tone: "bg-destructive/10 text-destructive", urgent: true },
+  { day: 2, title: "出院第 2 天", focus: "211 饮食结构 + 控糖知识", count: 6, tone: "bg-warning/10 text-warning" },
+  { day: 3, title: "出院第 3 天", focus: "蛋白质摄入 + 喝水点评", count: 5, tone: "bg-info/10 text-info" },
+  { day: 4, title: "出院第 4 天", focus: "维生素 B 族 + 蔬菜先行", count: 7, tone: "bg-info/10 text-info" },
+  { day: 5, title: "出院第 5 天", focus: "细嚼慢咽 + 晚餐时间管理", count: 4, tone: "bg-success/10 text-success" },
+  { day: 6, title: "出院第 6 天", focus: "餐盘法则 + 饮水量复盘", count: 3, tone: "bg-success/10 text-success" },
+  { day: 7, title: "出院第 7 天", focus: "周复盘 + 小餐具策略", count: 3, tone: "bg-primary-soft text-primary" },
 ];
 
 const Workbench = () => {
   const { push } = useNav();
-  const quickActions = [
-    { label: "服务派单", icon: Send, gradient: "bg-gradient-primary", view: "dispatch" as const },
-    { label: "智能随访", icon: Stethoscope, gradient: "bg-gradient-cool", view: "smart-followup" as const },
-    { label: "AI话术", icon: Sparkles, gradient: "bg-gradient-warm", view: "ai-script" as const },
-    { label: "一键发送", icon: Mic, gradient: "bg-gradient-primary", view: "send-message" as const },
-  ];
-  const stats = statsData.map((s, i) => ({
-    ...s,
-    onClick: () => push(["task-board", "task-board", "alert-detail", "task-board"][i] as any),
-  }));
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <header className="px-5 pt-3 pb-5 bg-gradient-primary text-primary-foreground">
-        <div className="flex items-center justify-between mb-4">
+      <header className="px-5 pt-3 pb-8 bg-gradient-primary text-primary-foreground">
+        <div className="flex items-center justify-between">
           <div>
             <p className="text-xs opacity-80">早上好 · 周三</p>
             <h1 className="text-xl font-bold mt-0.5">健康管理师 林医生</h1>
@@ -41,23 +34,13 @@ const Workbench = () => {
             <span className="absolute top-1.5 right-2 w-2 h-2 rounded-full bg-warning" />
           </button>
         </div>
-        <button onClick={() => push("ai-assistant")} className="w-full bg-white/15 backdrop-blur rounded-2xl p-3 flex items-center gap-3 text-left">
-          <div className="w-9 h-9 rounded-xl bg-white/25 flex items-center justify-center">
-            <Sparkles className="w-4 h-4" />
-          </div>
-          <div className="flex-1 text-xs">
-            <p className="font-semibold">AI 助理：3 位用户血糖偏高</p>
-            <p className="opacity-80">建议优先安排今日随访</p>
-          </div>
-          <ArrowRight className="w-4 h-4" />
-        </button>
       </header>
 
-      <div className="flex-1 overflow-y-auto px-4 pb-4 -mt-3">
+      <div className="flex-1 overflow-y-auto px-4 pb-4 -mt-5">
         {/* Stats */}
-        <section className="bg-card rounded-2xl p-3 shadow-card grid grid-cols-4 gap-2">
-          {stats.map((s) => (
-            <button key={s.label} onClick={s.onClick} className="flex flex-col items-center text-center">
+        <section className="bg-card rounded-2xl p-3 shadow-card grid grid-cols-3 gap-2">
+          {statsData.map((s) => (
+            <button key={s.label} onClick={() => push(s.view)} className="flex flex-col items-center text-center">
               <div className={`w-9 h-9 rounded-xl ${s.tone} flex items-center justify-center mb-1.5`}>
                 <s.icon className="w-4 h-4" />
               </div>
@@ -67,52 +50,57 @@ const Workbench = () => {
           ))}
         </section>
 
-        {/* Quick actions */}
-        <section className="mt-4">
-          <div className="flex items-center justify-between mb-2.5">
-            <h2 className="text-sm font-bold text-foreground">快捷操作</h2>
+        {/* Service dispatch CTA */}
+        <button
+          onClick={() => push("dispatch")}
+          className="w-full mt-3 bg-gradient-primary rounded-2xl p-3 shadow-card flex items-center gap-3 text-primary-foreground text-left active:scale-[0.99] transition"
+        >
+          <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+            <Send className="w-4 h-4" />
           </div>
-          <div className="grid grid-cols-4 gap-2">
-            {quickActions.map((a) => (
-              <button
-                key={a.label}
-                onClick={() => push(a.view)}
-                className="bg-card rounded-2xl p-2.5 shadow-soft flex flex-col items-center gap-1.5 active:scale-95 transition"
-              >
-                <div className={`w-10 h-10 rounded-xl ${a.gradient} flex items-center justify-center text-primary-foreground shadow-soft`}>
-                  <a.icon className="w-4 h-4" />
-                </div>
-                <span className="text-[11px] text-foreground font-medium">{a.label}</span>
-              </button>
-            ))}
+          <div className="flex-1">
+            <p className="text-sm font-bold">服务派单</p>
+            <p className="text-[11px] opacity-85 mt-0.5">为团队成员分配新患者跟进任务</p>
           </div>
-        </section>
+          <ArrowRight className="w-4 h-4" />
+        </button>
 
-        {/* Task list */}
+        {/* Today's SOP-based tasks */}
         <section className="mt-4">
           <div className="flex items-center justify-between mb-2.5">
-            <h2 className="text-sm font-bold text-foreground">今日任务</h2>
+            <div>
+              <h2 className="text-sm font-bold text-foreground">今日任务 · SOP 跟进</h2>
+              <p className="text-[10px] text-muted-foreground mt-0.5">按出院后阶段分组 · 共 36 位在管用户</p>
+            </div>
             <button onClick={() => push("task-board")} className="text-xs text-primary flex items-center gap-0.5">
-              查看全部 <ArrowRight className="w-3 h-3" />
+              全部 <ArrowRight className="w-3 h-3" />
             </button>
           </div>
           <div className="bg-card rounded-2xl shadow-card overflow-hidden">
-            {tasks.map((t, i) => (
+            {sopStages.map((s, i) => (
               <button
-                key={i}
-                onClick={() => push("task-detail", t)}
-                className={`w-full text-left flex items-center gap-3 p-3 ${i !== tasks.length - 1 ? "border-b border-border" : ""}`}
+                key={s.day}
+                onClick={() => push("sop-stage", s)}
+                className={`w-full text-left flex items-center gap-3 p-3 ${i !== sopStages.length - 1 ? "border-b border-border" : ""}`}
               >
-                <div className="text-center">
-                  <p className="text-[10px] text-muted-foreground">时间</p>
-                  <p className="text-sm font-bold text-primary">{t.time}</p>
+                <div className={`w-11 h-11 rounded-xl ${s.tone} flex flex-col items-center justify-center shrink-0`}>
+                  <span className="text-[9px] leading-none">DAY</span>
+                  <span className="text-base font-bold leading-tight">{s.day}</span>
                 </div>
-                <div className="w-px h-8 bg-border" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-foreground truncate">{t.title}</p>
-                  <span className={`inline-block mt-1 text-[10px] px-1.5 py-0.5 rounded ${t.tone}`}>{t.tag}</span>
+                  <div className="flex items-center gap-1.5">
+                    <p className="text-xs font-semibold text-foreground">{s.title}</p>
+                    {s.urgent && <span className="text-[9px] px-1 py-0.5 rounded bg-destructive text-destructive-foreground">优先</span>}
+                  </div>
+                  <p className="text-[11px] text-muted-foreground mt-0.5 truncate">{s.focus}</p>
+                  <div className="flex items-center gap-1 mt-1 text-[10px] text-primary">
+                    <Users className="w-3 h-3" />
+                    <span>在管 {s.count} 位</span>
+                    <Sparkles className="w-3 h-3 ml-1.5" />
+                    <span>AI 话术已就绪</span>
+                  </div>
                 </div>
-                <Route className="w-4 h-4 text-muted-foreground" />
+                <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />
               </button>
             ))}
           </div>
@@ -132,6 +120,10 @@ const Workbench = () => {
             <div className="h-full w-1/2 bg-white rounded-full" />
           </div>
         </button>
+        <div className="flex items-center gap-2 mt-2">
+          <Route className="w-3 h-3 text-muted-foreground" />
+          <span className="text-[10px] text-muted-foreground">点击任务可查看 SOP 标准话术与一键发送</span>
+        </div>
       </div>
     </div>
   );
