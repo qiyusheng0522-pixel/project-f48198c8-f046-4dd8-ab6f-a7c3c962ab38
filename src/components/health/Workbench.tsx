@@ -1,4 +1,4 @@
-import { Bell, Send, ClipboardList, MessageCircle, CheckCircle2, ArrowRight, Users, Sparkles } from "lucide-react";
+import { Bell, Send, ClipboardList, MessageCircle, CheckCircle2, ArrowRight, Users, Sparkles, Clock } from "lucide-react";
 import { useNav } from "./nav-context";
 
 const statsData = [
@@ -7,15 +7,17 @@ const statsData = [
   { label: "今日已完成", value: 36, icon: CheckCircle2, tone: "bg-warning/10 text-warning", view: "task-board" as const },
 ];
 
-// SOP 一周跟进阶段（出院/入组第 X 天）
-const sopStages = [
-  { day: 1, title: "出院第 1 天", focus: "建档启动 · 4 步曲 + 三餐打卡督促", count: 8, tone: "bg-destructive/10 text-destructive", urgent: true },
-  { day: 2, title: "出院第 2 天", focus: "211 饮食结构 + 控糖知识", count: 6, tone: "bg-warning/10 text-warning" },
-  { day: 3, title: "出院第 3 天", focus: "蛋白质摄入 + 喝水点评", count: 5, tone: "bg-info/10 text-info" },
-  { day: 4, title: "出院第 4 天", focus: "维生素 B 族 + 蔬菜先行", count: 7, tone: "bg-info/10 text-info" },
-  { day: 5, title: "出院第 5 天", focus: "细嚼慢咽 + 晚餐时间管理", count: 4, tone: "bg-success/10 text-success" },
-  { day: 6, title: "出院第 6 天", focus: "餐盘法则 + 饮水量复盘", count: 3, tone: "bg-success/10 text-success" },
-  { day: 7, title: "出院第 7 天", focus: "周复盘 + 小餐具策略", count: 3, tone: "bg-primary-soft text-primary" },
+// 今日 SOP 待办：每条 = 一个时间点 × 一个话术 × 一组同状态患者
+const sopTasks = [
+  { time: "08:00", day: 1, title: "第 1 天 · 早餐打卡提醒", count: 4, tone: "bg-destructive/10 text-destructive", urgent: true },
+  { time: "10:00", day: 2, title: "第 2 天 · 控糖小知识推送", count: 6, tone: "bg-warning/10 text-warning" },
+  { time: "10:00", day: 4, title: "第 4 天 · 维生素 B 族科普", count: 7, tone: "bg-info/10 text-info" },
+  { time: "11:00", day: 1, title: "第 1 天 · 午餐准备提醒", count: 4, tone: "bg-info/10 text-info" },
+  { time: "13:00", day: 3, title: "第 3 天 · 饮水提醒（300ml）", count: 5, tone: "bg-info/10 text-info" },
+  { time: "15:00", day: 1, title: "第 1 天 · 下午饮水提醒", count: 4, tone: "bg-warning/10 text-warning" },
+  { time: "15:00", day: 5, title: "第 5 天 · 询问饥饿感", count: 2, tone: "bg-success/10 text-success" },
+  { time: "17:00", day: 1, title: "第 1 天 · 晚餐五六分饱提醒", count: 4, tone: "bg-success/10 text-success" },
+  { time: "17:00", day: 6, title: "第 6 天 · 晚餐量控提醒", count: 2, tone: "bg-primary-soft text-primary" },
 ];
 
 const Workbench = () => {
@@ -70,34 +72,33 @@ const Workbench = () => {
           <div className="flex items-center justify-between mb-2.5">
             <div>
               <h2 className="text-sm font-bold text-foreground">今日任务 · SOP 跟进</h2>
-              <p className="text-[10px] text-muted-foreground mt-0.5">按出院后阶段分组 · 共 36 位在管用户</p>
+              <p className="text-[10px] text-muted-foreground mt-0.5">按时间节点 × 话术 × 同状态患者分组 · 共 36 位在管用户</p>
             </div>
             <button onClick={() => push("task-board")} className="text-xs text-primary flex items-center gap-0.5">
               全部 <ArrowRight className="w-3 h-3" />
             </button>
           </div>
           <div className="bg-card rounded-2xl shadow-card overflow-hidden">
-            {sopStages.map((s, i) => (
+            {sopTasks.map((s, i) => (
               <button
-                key={s.day}
+                key={i}
                 onClick={() => push("sop-stage", s)}
-                className={`w-full text-left flex items-center gap-3 p-3 ${i !== sopStages.length - 1 ? "border-b border-border" : ""}`}
+                className={`w-full text-left flex items-center gap-3 p-3 ${i !== sopTasks.length - 1 ? "border-b border-border" : ""}`}
               >
-                <div className={`w-11 h-11 rounded-xl ${s.tone} flex flex-col items-center justify-center shrink-0`}>
-                  <span className="text-[9px] leading-none">DAY</span>
-                  <span className="text-base font-bold leading-tight">{s.day}</span>
+                <div className={`w-12 h-12 rounded-xl ${s.tone} flex flex-col items-center justify-center shrink-0`}>
+                  <Clock className="w-3 h-3 mb-0.5" />
+                  <span className="text-[11px] font-bold leading-none">{s.time}</span>
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5">
-                    <p className="text-xs font-semibold text-foreground">{s.title}</p>
-                    {s.urgent && <span className="text-[9px] px-1 py-0.5 rounded bg-destructive text-destructive-foreground">优先</span>}
+                    <p className="text-xs font-semibold text-foreground truncate">{s.title}</p>
+                    {s.urgent && <span className="text-[9px] px-1 py-0.5 rounded bg-destructive text-destructive-foreground shrink-0">优先</span>}
                   </div>
-                  <p className="text-[11px] text-muted-foreground mt-0.5 truncate">{s.focus}</p>
                   <div className="flex items-center gap-1 mt-1 text-[10px] text-primary">
                     <Users className="w-3 h-3" />
-                    <span>在管 {s.count} 位</span>
+                    <span>{s.count} 位待发</span>
                     <Sparkles className="w-3 h-3 ml-1.5" />
-                    <span>AI 话术已就绪</span>
+                    <span>AI 话术已就绪 · 一键群发</span>
                   </div>
                 </div>
                 <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />
