@@ -1,13 +1,12 @@
-import { LayoutGrid, Users, AlertTriangle, BarChart3, User } from "lucide-react";
+import { LayoutGrid, Users, MessageCircle, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type TabKey = "workbench" | "users" | "alerts" | "performance" | "me";
+export type TabKey = "workbench" | "users" | "messages" | "me";
 
 const tabs: { key: TabKey; label: string; icon: typeof LayoutGrid }[] = [
   { key: "workbench", label: "工作台", icon: LayoutGrid },
   { key: "users", label: "用户管理", icon: Users },
-  { key: "alerts", label: "预警中心", icon: AlertTriangle },
-  { key: "performance", label: "绩效看板", icon: BarChart3 },
+  { key: "messages", label: "沟通", icon: MessageCircle },
   { key: "me", label: "我的", icon: User },
 ];
 

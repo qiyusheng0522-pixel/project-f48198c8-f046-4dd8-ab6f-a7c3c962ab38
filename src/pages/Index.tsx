@@ -3,8 +3,7 @@ import PhoneFrame from "@/components/PhoneFrame";
 import BottomNav, { TabKey } from "@/components/health/BottomNav";
 import Workbench from "@/components/health/Workbench";
 import UsersPage from "@/components/health/UsersPage";
-import AlertsPage from "@/components/health/AlertsPage";
-import PerformancePage from "@/components/health/PerformancePage";
+import MessagesPage from "@/components/health/MessagesPage";
 import MePage from "@/components/health/MePage";
 import { NavProvider, SubView } from "@/components/health/nav-context";
 import NotificationsView from "@/components/health/subviews/NotificationsView";
@@ -18,6 +17,8 @@ import SendMessageView from "@/components/health/subviews/SendMessageView";
 import PatientChatView from "@/components/health/subviews/PatientChatView";
 import StandardPathView from "@/components/health/subviews/StandardPathView";
 import SopStageView from "@/components/health/subviews/SopStageView";
+import PerformancePage from "@/components/health/PerformancePage";
+import AlertsPage from "@/components/health/AlertsPage";
 import FollowupRecordView from "@/components/health/subviews/FollowupRecordView";
 import UserDetailView from "@/components/health/subviews/UserDetailView";
 import UserPortraitView from "@/components/health/subviews/UserPortraitView";
@@ -59,6 +60,8 @@ const Index = () => {
       case "patient-chat": return <PatientChatView payload={top.payload} />;
       case "standard-path": return <StandardPathView />;
       case "sop-stage": return <SopStageView payload={top.payload} />;
+      case "performance": return <PerformancePage />;
+      case "alerts-center": return <AlertsPage />;
       case "followup-record": return <FollowupRecordView />;
       case "user-detail": return <UserDetailView payload={top.payload} />;
       case "user-portrait": return <UserPortraitView />;
@@ -89,8 +92,7 @@ const Index = () => {
             <>
               {tab === "workbench" && <Workbench />}
               {tab === "users" && <UsersPage />}
-              {tab === "alerts" && <AlertsPage />}
-              {tab === "performance" && <PerformancePage />}
+              {tab === "messages" && <MessagesPage />}
               {tab === "me" && <MePage />}
             </>
           )}

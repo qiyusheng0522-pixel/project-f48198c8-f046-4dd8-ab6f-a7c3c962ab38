@@ -1,4 +1,4 @@
-import { Bell, Send, ClipboardList, MessageCircle, CheckCircle2, ArrowRight, Route, Users, Sparkles } from "lucide-react";
+import { Bell, Send, ClipboardList, MessageCircle, CheckCircle2, ArrowRight, Users, Sparkles } from "lucide-react";
 import { useNav } from "./nav-context";
 
 const statsData = [
@@ -106,24 +106,6 @@ const Workbench = () => {
           </div>
         </section>
 
-        {/* Standard path */}
-        <button onClick={() => push("standard-path")} className="w-full text-left mt-4 bg-gradient-cool rounded-2xl p-4 text-primary-foreground shadow-card block">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-xs opacity-90">服务标准路径</p>
-              <h3 className="text-base font-bold mt-1">糖尿病 · 三月期管理</h3>
-              <p className="text-[11px] opacity-85 mt-1">第 6 周 / 12 周 · 进度 50%</p>
-            </div>
-            <span onClick={(e) => { e.stopPropagation(); push("followup-record"); }} className="bg-white/20 backdrop-blur rounded-full px-3 py-1.5 text-xs font-medium">记录</span>
-          </div>
-          <div className="mt-3 h-1.5 bg-white/25 rounded-full overflow-hidden">
-            <div className="h-full w-1/2 bg-white rounded-full" />
-          </div>
-        </button>
-        <div className="flex items-center gap-2 mt-2">
-          <Route className="w-3 h-3 text-muted-foreground" />
-          <span className="text-[10px] text-muted-foreground">点击任务可查看 SOP 标准话术与一键发送</span>
-        </div>
       </div>
     </div>
   );
