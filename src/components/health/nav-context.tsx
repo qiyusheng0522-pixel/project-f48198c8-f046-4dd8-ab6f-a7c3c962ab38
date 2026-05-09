@@ -11,6 +11,7 @@ export type SubView =
   | "send-message"
   | "patient-chat"
   | "standard-path"
+  | "sop-stage"
   | "followup-record"
   | "user-detail"
   | "user-portrait"
