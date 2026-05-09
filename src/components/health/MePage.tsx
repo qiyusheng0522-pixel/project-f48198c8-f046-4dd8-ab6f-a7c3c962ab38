@@ -1,4 +1,4 @@
-import { ChevronRight, Settings, Shield, Bell, HelpCircle, FileText, LogOut, Award, Edit3 } from "lucide-react";
+import { ChevronRight, Settings, Shield, Bell, HelpCircle, FileText, LogOut, Award, Edit3, BarChart3, AlertTriangle } from "lucide-react";
 import { useNav, SubView } from "./nav-context";
 
 const stats = [
@@ -8,6 +8,13 @@ const stats = [
 ];
 
 const groups = [
+  {
+    title: "工作中心",
+    items: [
+      { icon: BarChart3, label: "绩效看板", desc: "个人 / 团队 / 数据看板", view: "performance" as SubView },
+      { icon: AlertTriangle, label: "预警中心", desc: "查看健康指标与服务预警", view: "alerts-center" as SubView },
+    ],
+  },
   {
     title: "个人资料",
     items: [
