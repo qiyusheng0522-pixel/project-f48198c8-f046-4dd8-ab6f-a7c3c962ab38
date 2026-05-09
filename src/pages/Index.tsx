@@ -3,8 +3,7 @@ import PhoneFrame from "@/components/PhoneFrame";
 import BottomNav, { TabKey } from "@/components/health/BottomNav";
 import Workbench from "@/components/health/Workbench";
 import UsersPage from "@/components/health/UsersPage";
-import AlertsPage from "@/components/health/AlertsPage";
-import PerformancePage from "@/components/health/PerformancePage";
+import MessagesPage from "@/components/health/MessagesPage";
 import MePage from "@/components/health/MePage";
 import { NavProvider, SubView } from "@/components/health/nav-context";
 import NotificationsView from "@/components/health/subviews/NotificationsView";
@@ -89,8 +88,7 @@ const Index = () => {
             <>
               {tab === "workbench" && <Workbench />}
               {tab === "users" && <UsersPage />}
-              {tab === "alerts" && <AlertsPage />}
-              {tab === "performance" && <PerformancePage />}
+              {tab === "messages" && <MessagesPage />}
               {tab === "me" && <MePage />}
             </>
           )}
